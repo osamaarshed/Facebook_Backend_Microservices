@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
@@ -6,15 +7,21 @@ const { Server } = require("socket.io");
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/public", express.static("public"));
-const port = 8083;
+const port = process.env.MESSAGES_PORT;
 
 //Importing Routes
 const routes = require("./Routes/routes");
 const { saveMessages } = require("./Controllers/messages-controller");
 
 //Mongo Connection
-mongoose.connect("mongodb://localhost:27017/facebook");
+mongoose
+  .connect(process.env.MONGODB_CONNECT)
+  .then(() => {
+    console.log("DB Connected");
+  })
+  .catch((error) => {
+    console.log("Error: ", error);
+  });
 
 //Routes
 app.use("/", routes);
