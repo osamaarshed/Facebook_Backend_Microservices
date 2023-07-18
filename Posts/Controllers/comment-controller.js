@@ -33,6 +33,48 @@ const createComments = async (req, res, next) => {
   }
 };
 
+const randomComments = async (req, res, next) => {
+  const payload = {
+    comment: "This is a random comment on this post",
+    userId: req.user,
+    postId: req.body.postId,
+  };
+  const createRandomComment = () => {
+    const promise = new Promise((resolve, reject) => {
+      const comments = Comments.create(payload);
+      Posts.findOneAndUpdate(
+        { _id: req.body.postId },
+        { $push: { comments: comments._id } },
+        { new: true }
+      );
+      resolve(comments);
+    });
+    return promise;
+  };
+  try {
+    let promises = [];
+    for (let i = 0; i < 5; i++) {
+      promises.push(createRandomComment());
+    }
+    Promise.allSettled(promises)
+      .then((result) => {
+        let all = [];
+        result.forEach((val) => {
+          all.push(val);
+        });
+
+        res
+          .status(200)
+          .send({ message: Success_Messages.Comment, result: all });
+      })
+      .catch((error) => {
+        console.log("Error: ", error);
+      });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateComments = async (req, res, next) => {
   try {
     const [comment] = await Comments.find({
@@ -72,4 +114,5 @@ module.exports = {
   createComments,
   updateComments,
   deleteComment,
+  randomComments,
 };

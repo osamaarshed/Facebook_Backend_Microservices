@@ -4,6 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start:gateway": "nodemon index",
+    "start:posts": "cd ../Posts && nodemon index",
+    "start:messages": "cd ../Messages && nodemon index",
+    "start:addfriends": "cd ../AddFriends && nodemon index",
+    "start:user": "cd ../User && nodemon index",
+    "start:all": "concurrently \"npm run start:gateway\" \"npm run start:posts\" \"npm run start:messages\" \"npm run start:addfriends\" \"npm run start:user\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "concurrently": "^8.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
