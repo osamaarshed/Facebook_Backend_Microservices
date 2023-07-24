@@ -55,9 +55,9 @@ const showOthersPosts = async (req, res, next) => {
   }
 };
 
-const createPost = async (req, res, next) => {
+const createPost = (req, res, next) => {
   try {
-    await Posts.create({
+    Posts.create({
       likes: [],
       comments: [],
       userId: req.user,
@@ -67,7 +67,6 @@ const createPost = async (req, res, next) => {
       res.status(201).send({ message: Success_Messages.Created });
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

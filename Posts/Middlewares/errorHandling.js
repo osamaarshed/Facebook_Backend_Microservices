@@ -2,6 +2,7 @@ const express = require("express");
 const { Error_Messages } = require("../constants");
 
 const errorHandler = (err, req, res, next) => {
+  console.log("here");
   res.status(500).send({
     error: err.stack,
     message: Error_Messages.Server,
@@ -9,8 +10,3 @@ const errorHandler = (err, req, res, next) => {
 };
 
 module.exports = errorHandler;
-
-// const errorHandler = (err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).send({ message: 'Internal Server Error' });
-// }
